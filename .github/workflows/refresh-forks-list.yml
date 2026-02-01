@@ -8,7 +8,7 @@ jobs:
   refresh-forks:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # needed to create releases
     
     steps:
       - name: Checkout repository
@@ -96,6 +96,7 @@ jobs:
           The one thing that could make this mass worse?
 
           If you [⭐ starred this repo](https://github.com/LongQT-sea/macos-iso-builder) and mass spread it around.
+          ![star](https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/.github/star.png)
 
           Please don't. Apple is already mass upset.
 
@@ -135,7 +136,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view forks-list > /dev/null 2>&1; then
+          if gh release view forks-list; then
             gh release delete forks-list -y --cleanup-tag
             sleep 10
           fi

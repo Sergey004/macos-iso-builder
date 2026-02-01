@@ -14,7 +14,7 @@ Check [Release page](https://github.com/LongQT-sea/mkmaciso/releases/tag/forks-l
 
 **ISO files** - These work great for VMs (Proxmox, QEMU, VirtualBox, VMware). Just attach them like a virtual DVD. They're hybrid UDF/HFS format, so they'll even mount in Windows if you need to poke around inside.
 
-**DMG files** - Raw disk images with GPT partition tables. Flash these to a USB drive with Rufus (Windows), `dd` (Linux), or `asr` (macOS) to make bootable installation media. You can also convert them to VHD/VMDK with `qemu-img` if you want.
+**DMG files** - Raw disk images with GPT partition tables. Flash these to a USB drive with [Rufus](https://rufus.ie/en/#download) (Windows), `dd` (Linux), or `asr` (macOS) to make bootable installation media. You can also convert them to VHD/VMDK with `qemu-img` if you want.
 
 ## Supported versions
 
@@ -44,13 +44,13 @@ Lion, Mountain Lion, Mavericks, Yosemite, El Capitan, Sierra, High Sierra, Mojav
 
    * **macOS version** – Choose a version (*Sequoia*, *Sonoma*, etc.).
    * **Image format** – Choose `iso` for virtual machines or `dmg` for bootable USB drives.
-6. Click the green **"Run workflow"** button to start the build, then wait for the workflow to complete (this may take 10–60 minutes).
+6. Click the green **"Run workflow"** button to start the build, then wait for the workflow to complete.
 7. Once completed, reload the page and scroll down to the **Artifacts** section. Click the artifact link to start downloading (e.g., `macOS_Sequoia_15.7.3.iso`).
 8. Unzip the downloaded artifact and you're done.
 
 ### Already have macOS? Run `mkmaciso` locally
 
-Quick run (change 'tahoe' to whatever you want):
+Quick run using Terminal.app (change `tahoe` to whatever you want):
 ```bash
 curl -s https://raw.githubusercontent.com/LongQT-sea/mkmaciso/main/mkmaciso | bash -s tahoe
 ```
@@ -70,7 +70,7 @@ For VMs, just attach the ISO as a virtual CD drive. Proxmox users - if you want 
 
 For bootable USB drives, after you flash the DMG there'll be leftover space on the drive. You can use that to create a FAT32 partition for your EFI folder if you need one.
 
-If you're using dd on Linux, triple-check your target device. dd doesn't ask for confirmation.
+If you're using `dd` on Linux, triple-check your target device. `dd` doesn't ask for confirmation.
 
 ## Requirements for mkmaciso
 

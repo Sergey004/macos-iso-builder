@@ -37,17 +37,21 @@ jobs:
         run: |
           echo "Runner OS: $(sw_vers -productName) $(sw_vers -productVersion)"
           echo "Architecture: $(uname -m)"
-          echo "Available disk space:"
-          df -h
-          echo "Python version:"
-          python3 --version
+          echo ""
+          df -h $(mktemp)
+          echo ""
+          echo "RAM: $(top -l 1 | grep PhysMem)"
+          echo ""
+          echo "CPU: $(sysctl -n machdep.cpu.brand_string)"
+          echo ""
+          echo "Python version: ${python3 --version}"
 
       - name: Download macrecovery.py
         id: download_recovery_image
         continue-on-error: true
         run: |
           echo "Downloading macrecovery.py from acidanthera/OpenCorePkg..."
-          curl -OL "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py"
+          curl --retry 3 --max-time 10 --connect-timeout 3 -OL "https://raw.githubusercontent.com/acidanthera/OpenCorePkg/master/Utilities/macrecovery/macrecovery.py"
 
       - name: Get version info
         id: version_info
@@ -94,11 +98,6 @@ jobs:
           echo "model=$MODEL" >> $GITHUB_OUTPUT
           echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
           echo "os_flag=$OS_FLAG" >> $GITHUB_OUTPUT
-          
-          echo "Board ID: $BOARD_ID"
-          echo "Model: $MODEL"
-          echo "Version Name: $VERSION_NAME"
-          echo "OS Flag: $OS_FLAG"
 
       - name: Download macOS Recovery
         run: |
@@ -109,9 +108,6 @@ jobs:
           else
             script -q /dev/null python3 macrecovery.py -b "${{ steps.version_info.outputs.board_id }}" -m "${{ steps.version_info.outputs.model }}" download
           fi
-          
-          echo "Download completed. Checking files..."
-          ls -la com.apple.recovery.boot/
 
       - name: Determine recovery image filename
         id: recovery_file
